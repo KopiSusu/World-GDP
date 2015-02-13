@@ -13,7 +13,7 @@ function(convert, THREE) {
 // debugger
 
     // debugger
-    var geometry  = new THREE.TextGeometry( "CLICK ANYWHERE TO START", {
+    var geometry  = new THREE.TextGeometry( "A WORLD BROKEN BY WEALTH", {
         size: 18,
         height: 4,
         curveSegments: 0,
@@ -66,9 +66,9 @@ function(convert, THREE) {
     // debugger
 
     click.position.x = 7;
-    click.position.y = 150;
+    click.position.y = 230;
     logo.position.x = -170;
-    logo.position.y = -170;
+    logo.position.y = -250;
     // mesh.scale.z = 20;
     layer.add(click);
     layer.add(logo);

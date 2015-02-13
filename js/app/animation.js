@@ -4,16 +4,19 @@
 ** New layer should be added automatically to the animation */
 
 define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], function (THREE, $, TweenMax, layers, OrbitControls) {
+    var about = document.getElementById( 'about' );
+    
     var totalgdp = 0;
     // set the scene size
     var WIDTH = window.innerWidth,
         HEIGHT = window.innerHeight,
 
+
     // set some camera attributes
         VIEW_ANGLE = 45,
         ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
-        FAR = 10000,
+        FAR = 20000,
 
     // set basic attributes
         layers = layers,
@@ -92,7 +95,7 @@ define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], func
     }
 
     var updateContinentScale = function(country, scale) {
-        TweenMax.to(country.scale, 0.7, { x : scale, y : scale, z : scale });
+        TweenMax.to(country.scale, 0.9, { x : scale, y : scale, z : scale });
     }
 
     // var PI2 = Math.PI * 2;
@@ -113,6 +116,19 @@ define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], func
 
     var show = false
 
+    about.onclick = function(){ 
+            if (show === true){
+                for (var i = 0; i < continents.length; i++) {
+                    // TweenMax.to(continents[i].material, 1, { opacity: 1});
+                    // TweenMax.to(continents[i].scale, time, { x : 1.0, y : 1.0, z : 1.0 });
+                    var time = Math.random()+1+Math.random();
+                    var contscale = continents[i].geometry.gdp / 10000
+                    TweenMax.to(continents[i].scale, time, { x : 1.0, y : 1.0, z : 1.0 });
+                    show = false
+                }
+            }
+        };
+
     function onDocumentMouseDown( event ) {
 
         event.preventDefault();
@@ -123,7 +139,8 @@ define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], func
                 // TweenMax.to(continents[i].material, 1, { opacity: 1});
                 // TweenMax.to(continents[i].scale, time, { x : 1.0, y : 1.0, z : 1.0 });
                 var time = Math.random()+1+Math.random();
-                TweenMax.to(continents[i].scale, time, { x : 1.0, y : 1.0, z : 1.0 });
+                var contscale = continents[i].geometry.gdp / 10000
+                TweenMax.to(continents[i].scale, time, { x : continents[i].geometry.scaleRatio, y : continents[i].geometry.scaleRatio, z : continents[i].geometry.scaleRatio });
                 show = true
             }
         }
@@ -139,13 +156,13 @@ define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], func
         if (intersects[ 0 ]) {
             if (activeCountry) {
                 // reset country scale
-                updateContinentScale(activeCountry, 1.0);
+                updateContinentScale(activeCountry, activeCountry.geometry.scaleRatio);
             }
         }
 
         if (intersects[ 0 ]) {
             var continent = intersects[ 0 ].object;
-            updateContinentScale(continent, 1.1);
+            updateContinentScale(continent, 1.2);
             console.log(continent.geometry.debt)
             $('#country-name').text(continent.geometry.name);
             if (isNaN(continent.geometry.gdp)){
@@ -155,9 +172,10 @@ define(['three', 'jquery', 'TweenMax', './layers/config', 'orbitcontrols'], func
                 $('#timer').text("$"+continent.geometry.gdp);
                 $('#percentage').text("%" + Math.round(((continent.geometry.gdp/totalgdp) * 100) * 100) / 100 + " world GDP for 2012");
             }
+            camera.lookAt( continent.position );
             activeCountry = continent; 
             // var particle = new THREE.Particle( particleMaterial );
-            // particle.position = intersects[ 0 ].point;
+            // camera.position = intersects[0].point;
             // particle.scale.x = particle.scale.y = 8;
             // scene.add( particle );
             var wrapper = new THREE.PointCloudMaterial({

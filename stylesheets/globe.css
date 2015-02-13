@@ -15,9 +15,9 @@ a {
 
 #country-name {
   position: absolute;
-  top: 1%;
-  left: 39%;
-  width: 300px;
+  top: 17%;
+  left: 2%;
+  width: 150px;
   height: 40px;
   font-family: 'Inconsolata';
   font-size: 30px;
@@ -150,9 +150,10 @@ margin-top: 1%;
 
 #about{
 position: absolute;
-right: -5px;
-bottom: -36px;
-font-size: 30px;
+right: -38px;
+bottom: -25px;
+font-size: 14px;
+width: 78px;
 color: #2194CE;
 opacity: 1;
 cursor: pointer;

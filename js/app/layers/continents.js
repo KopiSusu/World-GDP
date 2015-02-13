@@ -12,6 +12,18 @@ function(convert, countries, THREE, Map3DGeometry) {
       var country = countries[name];
       var gdp = parseInt(countries[name].data.gdp);
       var geometry = new Map3DGeometry(country, 0.99);
+      var gdpScale = gdp / 10000;
+      if (gdpScale < 1 && gdpScale > 0.6) {
+          geometry.scaleRatio = gdpScale;
+      } else if (gdpScale > 1 && gdpScale < 1.5 ) {
+          geometry.scaleRatio = 1.05;
+      } else if (gdpScale > 1.5 && gdpScale < 3 ) {
+          geometry.scaleRatio = 1.1;
+      } else if (gdpScale > 3) {
+          geometry.scaleRatio = 1.15;
+      } else if (gdpScale < 0.5 || isNaN(gdpScale)) {
+          geometry.scaleRatio = 0.6;
+      }
       geometry.name = name;
       geometry.gdp = gdp;
       var colour = gdp * 0xffffff;
@@ -24,9 +36,9 @@ function(convert, countries, THREE, Map3DGeometry) {
         opacity: 1
       });
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.scale.x = 20
-      mesh.scale.y = 20
-      mesh.scale.z = 20 
+      mesh.scale.x = 1.0
+      mesh.scale.y = 1.0
+      mesh.scale.z = 1.0 
       layer.add( mesh )
       return mesh;
     });
